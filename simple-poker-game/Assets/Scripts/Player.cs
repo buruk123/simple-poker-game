@@ -20,5 +20,6 @@ public class Player
     {
         this.Card1 = card1;
         this.Card2 = card2;
+        Debug.Log(Nickname + ": " + card1.Rank + " of " + card1.Color + " | " + card2.Rank + " of " + card2.Color);
     }
 }

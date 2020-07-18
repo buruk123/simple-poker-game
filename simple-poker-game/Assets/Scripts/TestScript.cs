@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using UnityEditorInternal;
 using UnityEngine;
@@ -31,13 +32,18 @@ public class TestScript : MonoBehaviour
         deck = new List<Card>();
         var ranks = EnumUtil.GetValues<CardsRank>();
         var colors = EnumUtil.GetValues<CardsColor>();
-
+        var powerOfRank = 1;
+        var powerOfColor = 1;
         foreach (var rank in ranks)
         {
             foreach (var color in colors)
             {
-                deck.Add(new Card(rank, color));
+                deck.Add(new Card(rank, color, powerOfRank, powerOfColor));
+                powerOfColor++;
             }
+
+            powerOfRank++;
+            powerOfColor = 1;
         }
     }
 
@@ -67,6 +73,7 @@ public class TestScript : MonoBehaviour
         for (var i = 0; i < deckCards.Length; i++)
         {
             deckCards[i] = GetRandomCard();
+            Debug.Log(deckCards[i].Rank + " of " + deckCards[i].Color);
         }
     }
 
@@ -75,7 +82,11 @@ public class TestScript : MonoBehaviour
         var index = random.Next(0, deck.Count);
         var card = deck[index];
         deck.RemoveAt(index);
-        Debug.Log(card.Rank + " of " + card.Color + " " + index);
         return card;
+    }
+
+    private void CompareCardsAndDeck(Player player, Card[] deckCards)
+    {
+        
     }
 }
