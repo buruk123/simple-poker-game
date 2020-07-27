@@ -63,11 +63,15 @@ public class TestScript : MonoBehaviour
         var card4 = GetRandomCard();
         Player2.GiveCardsToPlayer(card3, card4);
         Debug.Log("____________________________");
-        ShowDeck();
+        var deckOfCards = GetDeck();
         Debug.Log("____________________________");
+        CompareCardsAndDeck(Player1, deckOfCards);
+        Debug.Log("____________________________");
+        CompareCardsAndDeck(Player2, deckOfCards);
+
     }
 
-    private void ShowDeck()
+    private IEnumerable<Card> GetDeck()
     {
         Card[] deckCards = new Card[numsOfCardsOnDeck];
         for (var i = 0; i < deckCards.Length; i++)
@@ -75,6 +79,8 @@ public class TestScript : MonoBehaviour
             deckCards[i] = GetRandomCard();
             Debug.Log(deckCards[i].Rank + " of " + deckCards[i].Color);
         }
+
+        return deckCards.ToList();
     }
 
     private Card GetRandomCard()
@@ -85,8 +91,50 @@ public class TestScript : MonoBehaviour
         return card;
     }
 
-    private void CompareCardsAndDeck(Player player, Card[] deckCards)
+    private void CompareCardsAndDeck(Player player, IEnumerable<Card> deckCards)
     {
-        
+        CheckForPair(player, deckCards);
+    }
+
+    private void CheckForPair(Player player, IEnumerable<Card> deckCards)
+    {
+        var power = 0;
+        Card bestCard = null;
+        var isPlayerGotPair = false;
+        if (player.Card1.PowerOfRank == player.Card2.PowerOfRank)
+        {
+            power = player.Card1.PowerOfRank;
+            bestCard = player.Card1;
+            isPlayerGotPair = true;
+        }
+
+        foreach (var card in deckCards)
+        {
+            if (player.Card1.PowerOfRank == card.PowerOfRank)
+            {
+                if (power < player.Card1.PowerOfRank)
+                {
+                    power = player.Card1.PowerOfRank;
+                    bestCard = player.Card1;
+                    isPlayerGotPair = true;
+                }
+            }
+
+            if (player.Card2.PowerOfRank == card.PowerOfRank)
+            {
+                if (power < player.Card2.PowerOfRank)
+                {
+                    power = player.Card2.PowerOfRank;
+                    bestCard = player.Card2;
+                    isPlayerGotPair = true;
+                }
+            }
+        }
+
+        if (isPlayerGotPair)
+        {
+            Debug.Log(player.Nickname + " has a pair of " + bestCard.Rank);
+        }
+
     }
 }
