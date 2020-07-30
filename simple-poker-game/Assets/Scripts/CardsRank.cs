@@ -4,7 +4,6 @@ using UnityEngine;
 
 public enum CardsRank
 {
-    Ace,
     Two,
     Three,
     Four,
@@ -16,5 +15,6 @@ public enum CardsRank
     Ten,
     Jack,
     Queen,
-    King
+    King,
+    Ace
 }
